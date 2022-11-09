@@ -54,7 +54,7 @@ resource "google_service_account" "project_level_svc_account" {
 
 // generate a service account key for each service account and save to a local json file on disk
 resource "google_service_account_key" "project_level_svc_account_key" {
-  project            = data.google_projects.app_project.projects[0].project_id
+ # project            = data.google_projects.app_project.projects[0].project_id
   for_each           = google_service_account.project_level_svc_account
   service_account_id = each.key
   public_key_type    = "TYPE_X509_PEM_FILE"
