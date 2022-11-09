@@ -36,7 +36,7 @@ data "google_projects" "app_project" {
 
 resource "google_project_iam_binding" "svc_account" {
   for_each = { for x in local.svc_accounts_flat : "${x.name}-${x.role}" => x }
-#  project  = data.google_projects.app_project.projects[0].project_id
+  project  = data.google_projects.app_project.projects[0].project_id
   role     = each.value.role
 
   members = [
@@ -46,7 +46,7 @@ resource "google_project_iam_binding" "svc_account" {
 
 resource "google_service_account" "project_level_svc_account" {
   for_each     = local.svc_accounts
- # project      = data.google_projects.app_project.projects[0].project_id
+  project      = data.google_projects.app_project.projects[0].project_id
   account_id   = each.key
   display_name = each.key
 }
@@ -54,7 +54,7 @@ resource "google_service_account" "project_level_svc_account" {
 
 // generate a service account key for each service account and save to a local json file on disk
 resource "google_service_account_key" "project_level_svc_account_key" {
-#  project            = data.google_projects.app_project.projects[0].project_id
+  project            = data.google_projects.app_project.projects[0].project_id
   for_each           = google_service_account.project_level_svc_account
   service_account_id = each.key
   public_key_type    = "TYPE_X509_PEM_FILE"
